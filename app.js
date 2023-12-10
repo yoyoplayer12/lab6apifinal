@@ -1,11 +1,12 @@
-const fs = require('fs');
-const express = require("express");
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 const mongoose = require("mongoose");
-const app = express();
-const port = 3000;
+
 
 //connect to mongodb
-const credentials = "/etc/secrets/credentials.pem";
+const credentials = "./etc/secrets/credentials.pem";
 mongoose.connect("mongodb+srv://lab6.gfpqmsa.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority", {
     tlsCertificateKeyFile: credentials,
 });
@@ -20,16 +21,29 @@ db.once("open", () => {
 
 const scoreRouter = require("./routes/api/v1/scores");
 
+
+app.use(logger('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 //use routes
 app.use("/api/v1/scores", scoreRouter);
 
+});
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
-});
-// enable cors express
-const cors = require("cors");
-app.use(cors());
+var scoreRouters = require('./routes/api/v1/scores');
+
+var app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', scoreRouters);
+
+module.exports = app;

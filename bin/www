@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('../app.js');
-var debug = require('debug')('lab6:server');
+var app = require('../app');
+var debug = require('debug')('discordback:server');
 var http = require('http');
 
 /**

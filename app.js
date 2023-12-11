@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 
 //connect to mongodb
-const credentials = "/etc/secrets/credentials.pem";
+const credentials = "./etc/secrets/credentials.pem";
 mongoose.connect("mongodb+srv://lab6.gfpqmsa.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority", {
     tlsCertificateKeyFile: credentials,
 });
@@ -47,3 +47,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', scoreRouters);
 
 module.exports = app;
+
+
+
+const port = 3001;
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+});

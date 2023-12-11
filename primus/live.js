@@ -15,8 +15,12 @@ module.exports.go = (server) => {
             // Save the data to MongoDB
             const myData = new Score(data);
             try {
-                await myData.save();
-                console.log('Data saved to MongoDB');
+                const updatedData = await Score.findOneAndUpdate(
+                    { user: data.user }, // find a document with the same username
+                    data, // update it with the new data
+                    { new: true, upsert: true } // options: return updated doc and create if it doesn't exist
+                )
+                console.log('Data updated in MongoDB');
             } catch (err) {
                 console.log(err);
             }
